@@ -1,4 +1,8 @@
 /**
+ *Submitted for verification at Etherscan.io on 2020-09-15
+*/
+
+/**
  *Submitted for verification at Etherscan.io on 2019-03-22
 */
 
@@ -512,7 +516,7 @@ contract WLL is ERC20Detailed, ERC20Pausable, ERC20Burnable {
 
     function transferFrom(address from, address to, uint256 value) public notFrozen(from) returns (bool) {
         if (timelockList[from].length > 0) {
-            _autoUnlock(msg.sender);            
+            _autoUnlock(from);            
         }
         return super.transferFrom(from, to, value);
     }
@@ -632,17 +636,12 @@ contract WLL is ERC20Detailed, ERC20Pausable, ERC20Burnable {
                 delegatecall params explained:
                 gas: the amount of gas to provide for the call. `gas` is an Opcode that gives
                     us the amount of gas still available to execution
-
                 _impl: address of the contract to delegate to
-
                 ptr: to pass copied data
-
                 calldatasize: loads the size of `bytes memory data`, same as msg.data.length
-
                 0, 0: These are for the `out` and `outsize` params. Because the output could be dynamic,
                         these are set to 0, 0 so the output data will not be written to memory. The output
                         data will be read using `returndatasize` and `returdatacopy` instead.
-
                 result: This will be 0 if the call fails and 1 if it succeeds
             */
             let result := delegatecall(gas, impl, ptr, calldatasize, 0, 0)
